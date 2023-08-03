@@ -1,0 +1,51 @@
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.number-button {
+  /* border: 1px solid var(--primary-color); */
+  background-color: lightblue;
+  border-radius: 10px;
+  color: var(--primary-color);
+  font-size: 20px;
+  padding: 9px 20px;
+  height: fit-content;
+  cursor: pointer;
+}
+
+.colon-button {
+  border-radius: 10px;
+  background-color: lightblue;
+  width: 50px;
+  font-size: 30px;
+  padding: 1px 20px 5px 18px;
+  font-weight: bold;
+}
+
+.clear-button {
+  width: 80px; 
+  padding: 9px 20px 10px 15px;
+  font-size: 20px;
+}
+
+.input-container {
+  margin-top: 10px; 
+  margin-bottom: 20px;
+}
+
+.input-field {
+  font-size: 30px; 
+}
+
+.secret-button {
+  border: white;
+  background-color: transparent;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  padding: 9px 20px;
+  height: fit-content;
+}
