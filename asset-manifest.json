@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/proverbs-game/static/css/main.04b99ef5.css",
+    "main.js": "/proverbs-game/static/js/main.8f17f06c.js",
+    "index.html": "/proverbs-game/index.html",
+    "main.04b99ef5.css.map": "/proverbs-game/static/css/main.04b99ef5.css.map",
+    "main.8f17f06c.js.map": "/proverbs-game/static/js/main.8f17f06c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.04b99ef5.css",
+    "static/js/main.8f17f06c.js"
+  ]
+}
