@@ -19,7 +19,7 @@ const results = {
   fontSize: 20,
 };
 
-function ProverbsGame() {
+function NumberGame() {
   const [proverbsSet, setProverbsSet] = useState(Data);
   const [result, setResult] = useState("");
   const [attempts, setAttempts] = useState([]);
@@ -50,11 +50,11 @@ function ProverbsGame() {
     });
 
     if (number === currentProverb.value) {
-      setResult(`Your answer is ${number}. It is Correct!`);
+      setResult(`✅ Correct!`);
       setScore((prevScore) => prevScore + 1);
     } else if (number !== currentProverb.value) {
       setResult(
-        `Your answer is ${number}. The correct answer is ${currentProverb.value}.`
+        `❌ The correct answer is ${currentProverb.value}.`
       );
       setWrongProverbs((prevWrongProverbs) => [
         ...prevWrongProverbs,
@@ -119,7 +119,7 @@ function ProverbsGame() {
   
   return (
     <div style={styles}>
-      <h1>Let's Play the Proverbs Game!</h1>
+      <h1>Let's Play "What's the Proverb Number?"</h1>
 
       {proverbCount + 1}. {proverbsSet[proverbCount].label}
 
@@ -202,4 +202,4 @@ function shuffleArray(array) {
   }
 }
 
-export default ProverbsGame;
+export default NumberGame;
