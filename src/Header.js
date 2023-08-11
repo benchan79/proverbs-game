@@ -5,8 +5,8 @@ export default function Header() {
     <>
       <div className="header">
         <NavLink to="/proverbs-game">Home</NavLink>
-        <NavLink to="/proverbs-game/number">"What's the Proverb Number?"</NavLink>
-        <NavLink to="/proverbs-game/word">"Fill in the missing words"</NavLink>
+        <NavLink to="/proverbs-game/number">Number game</NavLink>
+        <NavLink to="/proverbs-game/word">Word game</NavLink>
       </div>
     </>
   );
