@@ -24,8 +24,8 @@ const WordGame = () => {
   const [proverbIndex, setProverbIndex] = useState(0);
   const [proverbWithBlanks, setProverbWithBlanks] = useState('');
   const [wrongProverbs, setWrongProverbs] = useState([]);
-  const[indices, setIndices] = useState([])
-  const[currentProverbCounter, setCurrentProverbCounter] = useState(0)
+  const [indices, setIndices] = useState([])
+  const [currentProverbCounter, setCurrentProverbCounter] = useState(0)
   const [result, setResult] = useState("");
   const [score, setScore] = useState(0);
   const [isOver, setIsOver] = useState(false);
@@ -36,6 +36,7 @@ const WordGame = () => {
     () => Prizes[Math.floor(Math.random() * Prizes.length + 1)]
   );
   const [questionCount, setQuestionCount] = useState(1);
+  const [filteredWordsList, setFilteredWordsList] = useState([])
 
   useEffect(() => {
     setProverbWithBlanks(generateProverbWithBlanks(proverbsSet[proverbIndex]));
@@ -47,6 +48,7 @@ const WordGame = () => {
     const selectedIndices = new Set();
     const indicesList = [];
     let counter = 0;
+    let newWordList = []
 
     while (selectedIndices.size < blanksCount) {
       const randomIndex = Math.floor(Math.random() * words.length);
@@ -57,14 +59,26 @@ const WordGame = () => {
       if (selectedIndices.has(index)) {
         counter += 1;
         indicesList.push(counter)
+        newWordList.push(word)
         return `(${counter})____`;
       }
       return word;
     });
 
+    while (newWordList.length < words.length*2) {
+      const randomIndex = Math.floor(Math.random() * wordsList.length);
+      if (!newWordList.includes(wordsList[randomIndex])) {
+        newWordList.push(wordsList[randomIndex]);
+      }
+    }
+
     setIndices(indicesList)
     words.push(`Proverb ${proverb.value}`)
     setProverbRetry(words.join(' '));
+    const sortedList = newWordList.sort((a, b) => {
+      return a.localeCompare(b, undefined, {sensitivity: 'base'});
+    });
+    setFilteredWordsList(sortedList)
     return words.join(' ');
   };
 
@@ -165,7 +179,7 @@ const WordGame = () => {
       </p>
 
       <div>
-        {wordsList.map((word, index) => {
+        {filteredWordsList.map((word, index) => {
           return (
             <button key={index} onClick={() => handleWordClick(word, index)} className="number-button" disabled={isOver} >
               {word}
