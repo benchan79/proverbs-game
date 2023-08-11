@@ -29,7 +29,6 @@ const WordGame = () => {
   const [result, setResult] = useState("");
   const [score, setScore] = useState(0);
   const [isOver, setIsOver] = useState(false);
-  const [gameIsOver, setGameIsOver] = useState(true);
   const [proverbRetry, setProverbRetry] = useState('');
   const [attempts, setAttempts] = useState([]);
   const [prize, setPrize] = useState(
@@ -83,7 +82,6 @@ const WordGame = () => {
   };
 
   const handleWordClick = (word, index) => {
-
     const updatedProverb = proverbWithBlanks.replace(`(${indices[currentProverbCounter]})____`, word);
     setProverbWithBlanks(updatedProverb);
     setCurrentProverbCounter((prevCounter) => prevCounter + 1);
@@ -109,21 +107,13 @@ const WordGame = () => {
         proverbsSet[proverbIndex],
       ]);
     }
-    setIsOver(true);
-    setGameIsOver(false)
     if (questionCount === proverbsSet.length) {
-      setGameIsOver(true);
+      setIsOver(true);
       return;
     }
-  }
-
-  const handleNextProverb = () => {
-    setProverbIndex(proverbIndex + 1);
+    setProverbIndex((prevProverbIndex) => prevProverbIndex + 1);
     setCurrentProverbCounter(0);
-    setResult("");
-    setIsOver(false);
-    setGameIsOver(true);
-  };
+  }
 
   const currentProverb = `${proverbsSet[proverbIndex].label} Proverb ${proverbsSet[proverbIndex].value}`;
 
@@ -137,7 +127,6 @@ const WordGame = () => {
     setResult("");
     setAttempts([]);
     setIsOver(false);
-    setGameIsOver(true);
     setPrize(Prizes[Math.floor(Math.random() * Prizes.length + 1)]);
     setScore(0);
     setProverbIndex(0);
@@ -151,7 +140,6 @@ const WordGame = () => {
     setResult("");
     setAttempts([]);
     setIsOver(false);
-    setGameIsOver(true);
     setPrize(Prizes[Math.floor(Math.random() * Prizes.length + 1)]);
     setScore(0);
     setProverbIndex(0);
@@ -191,12 +179,11 @@ const WordGame = () => {
       
       <div style={{ display: "flex", gap: 20 }}>
         <Button onClick={submitHandler} label="Submit!" disabled={isOver} />
-        <Button onClick={handleNextProverb} label="Next Proverb" disabled={gameIsOver} />
         <Button onClick={restartHandler} label="New Game" />
-        {isOver && gameIsOver && wrongProverbs.length !== 0 && <Button
+        {isOver && wrongProverbs.length !== 0 && <Button
           onClick={startNewGameWithWrongProverbs}
           label="Try again (Wrong Proverbs)"
-          disabled={wrongProverbs.length === 0 || !gameIsOver}
+          disabled={wrongProverbs.length === 0 || !isOver}
         />}
         <button onClick={handleSecretButtonClick} className="secret-button" disabled={isOver}>
           Secret
