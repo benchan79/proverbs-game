@@ -47,7 +47,7 @@ const WordGame = () => {
     const selectedIndices = new Set();
     const indicesList = [];
     let counter = 0;
-    let newWordList = []
+    const newWordList = []
 
     while (selectedIndices.size < blanksCount) {
       const randomIndex = Math.floor(Math.random() * words.length);
@@ -64,17 +64,19 @@ const WordGame = () => {
       return word;
     });
 
-    while (newWordList.length < words.length*2) {
+    let uniqueWords = [...new Set(newWordList)];
+
+    while (uniqueWords.length < 20) {
       const randomIndex = Math.floor(Math.random() * wordsList.length);
-      if (!newWordList.includes(wordsList[randomIndex])) {
-        newWordList.push(wordsList[randomIndex]);
+      if (!uniqueWords.includes(wordsList[randomIndex])) {
+        uniqueWords.push(wordsList[randomIndex]);
       }
     }
 
     setIndices(indicesList)
     words.push(`Proverb ${proverb.value}`)
     setProverbRetry(words.join(' '));
-    const sortedList = newWordList.sort((a, b) => {
+    const sortedList = uniqueWords.sort((a, b) => {
       return a.localeCompare(b, undefined, {sensitivity: 'base'});
     });
     setFilteredWordsList(sortedList)
@@ -134,6 +136,7 @@ const WordGame = () => {
     setQuestionCount(1);
     setProverbsSet(Data);
     setProverbWithBlanks(generateProverbWithBlanks(proverbsSet[proverbIndex]));
+    setWrongProverbs([]);
   };
 
   const startNewGameWithWrongProverbs = () => {
