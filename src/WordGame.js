@@ -35,15 +35,25 @@ const WordGame = () => {
     () => Prizes[Math.floor(Math.random() * Prizes.length + 1)]
   );
   const [questionCount, setQuestionCount] = useState(1);
-  const [filteredWordsList, setFilteredWordsList] = useState([])
+  const [filteredWordsList, setFilteredWordsList] = useState([]);
+  const [difficultyLevel, setDifficultyLevel] = useState("medium");
+  const [retry, setRetry] = useState(false);
 
   useEffect(() => {
     setProverbWithBlanks(generateProverbWithBlanks(proverbsSet[proverbIndex]));
-  }, [proverbsSet, proverbIndex]);
+  }, [proverbsSet, proverbIndex, difficultyLevel]);
 
   const generateProverbWithBlanks = (proverb) => {
     let words = proverb.label.split(' ');
-    const blanksCount = Math.floor(words.length / 2);
+    let blanksCount = 0;
+    if (difficultyLevel === "easy") {
+      blanksCount = Math.floor(words.length * 0.25);
+    } else if (difficultyLevel === "medium") {
+      blanksCount = Math.floor(words.length * 0.5);
+    } else {
+      blanksCount = Math.floor(words.length * 0.8);
+    }
+
     const selectedIndices = new Set();
     const indicesList = [];
     let counter = 0;
@@ -83,6 +93,10 @@ const WordGame = () => {
     return words.join(' ');
   };
 
+  const handleDifficultySelection = (level) => {
+    setDifficultyLevel(level);
+  }
+ 
   const handleWordClick = (word, index) => {
     const updatedProverb = proverbWithBlanks.replace(`(${indices[currentProverbCounter]})____`, word);
     setProverbWithBlanks(updatedProverb);
@@ -137,6 +151,7 @@ const WordGame = () => {
     setProverbsSet(Data);
     setProverbWithBlanks(generateProverbWithBlanks(proverbsSet[proverbIndex]));
     setWrongProverbs([]);
+    setRetry(false)
   };
 
   const startNewGameWithWrongProverbs = () => {
@@ -150,6 +165,7 @@ const WordGame = () => {
     setQuestionCount(1);
     setProverbsSet(wrongProverbs);
     setWrongProverbs([]);
+    setRetry(true)
   }
 
   const handleSecretButtonClick = () => {
@@ -159,6 +175,17 @@ const WordGame = () => {
   return (
     <div style={styles}>
       <h1>Let's Play "Fill in the missing words"</h1>
+      <p>
+        <button onClick={() => handleDifficultySelection("easy")} className="clear-button" disabled={proverbIndex !== 0 || retry} style={{ backgroundColor: difficultyLevel ==="easy" ? "pink" : "rgb(223, 230, 232)" }} >
+          Easy
+        </button>
+        <button onClick={() => handleDifficultySelection("medium")} className="clear-button" disabled={proverbIndex !== 0 || retry} style={{ backgroundColor: difficultyLevel ==="medium" ? "pink" : "rgb(223, 230, 232)" }} >
+          Medium
+        </button>
+        <button onClick={() => handleDifficultySelection("hard")} className="clear-button" disabled={proverbIndex !== 0 || retry} style={{ backgroundColor: difficultyLevel ==="hard" ? "pink" : "rgb(223, 230, 232)" }} >
+          Hard
+        </button>
+      </p>
       <p>
         <button class="round-button">Q{proverbIndex + 1}</button>
         {` `}
