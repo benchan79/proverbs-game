@@ -84,7 +84,6 @@ const WordGame = () => {
     }
 
     setIndices(indicesList)
-    words.push(`Proverb ${proverb.value}`)
     setProverbRetry(words.join(' '));
     const sortedList = uniqueWords.sort((a, b) => {
       return a.localeCompare(b, undefined, {sensitivity: 'base'});
@@ -107,7 +106,8 @@ const WordGame = () => {
     setQuestionCount((prevQuestionCount) => prevQuestionCount + 1);
     setAttempts((prevAttempts) => {
       const isCorrect = proverbWithBlanks === currentProverb;
-      const updatedAttempts = [...prevAttempts, { currentProverb, isCorrect }];
+      const attemptedProverb = `${currentProverb} Proverb ${proverbsSet[proverbIndex].value}`;
+      const updatedAttempts = [...prevAttempts, {attemptedProverb, isCorrect }];
       return updatedAttempts;
     });
 
@@ -131,7 +131,7 @@ const WordGame = () => {
     setCurrentProverbCounter(0);
   }
 
-  const currentProverb = `${proverbsSet[proverbIndex].label} Proverb ${proverbsSet[proverbIndex].value}`;
+  const currentProverb = proverbsSet[proverbIndex].label;
 
   const handleClearButtonClick = () => {
     setProverbWithBlanks(proverbRetry);
@@ -186,15 +186,17 @@ const WordGame = () => {
           Hard
         </button>
       </p>
-      <p>
-        <button class="round-button">Q{proverbIndex + 1}</button>
-        {` `}
-        {proverbWithBlanks}
-        {` `}
-        <button onClick={handleClearButtonClick} className="clear-button" disabled={isOver}>
-          Clear
-        </button>
-      </p>
+
+      <div style={{ fontSize:20, fontWeight:"bold" }}>
+        Q{proverbIndex + 1}. Proverb {proverbsSet[proverbIndex].value}
+      </div>
+      <br/>
+      {proverbWithBlanks}
+      <br/><br/>
+      <button onClick={handleClearButtonClick} className="clear-button" disabled={isOver}>
+        Clear
+      </button>
+      <br/><br/>
 
       <div>
         {filteredWordsList.map((word, index) => {
@@ -205,7 +207,8 @@ const WordGame = () => {
           );
         })}
       </div>
-      <p></p>
+
+      <p/>
       
       <div style={{ display: "flex", gap: 20 }}>
         <Button onClick={submitHandler} label="Submit!" disabled={isOver} />
@@ -233,7 +236,7 @@ const WordGame = () => {
 
       {questionCount - 1 === proverbsSet.length &&
         score === proverbsSet.length && (
-          <div>Congratulations! You won a {prize}!</div>
+          <div>Congratulations! You won {prize}!</div>
         )}
 
       {questionCount - 1 === proverbsSet.length &&
@@ -251,7 +254,7 @@ const WordGame = () => {
             key={index}
             style={{ color: proverb.isCorrect ? "black" : "red" }}
           >
-            {index + 1}. {proverb.currentProverb}
+            {index + 1}. {proverb.attemptedProverb} 
           </div>
         ))}
       </div>
