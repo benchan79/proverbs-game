@@ -46,12 +46,18 @@ const WordGame = () => {
   const generateProverbWithBlanks = (proverb) => {
     let words = proverb.label.split(' ');
     let blanksCount = 0;
+    let choicesCount = 0;
+
     if (difficultyLevel === "easy") {
       blanksCount = Math.floor(words.length * 0.25);
+      
+      choicesCount = blanksCount + 5;
     } else if (difficultyLevel === "medium") {
       blanksCount = Math.floor(words.length * 0.5);
+      choicesCount = blanksCount + 5;
     } else {
       blanksCount = Math.floor(words.length * 0.8);
+      choicesCount = blanksCount + 5;
     }
 
     const selectedIndices = new Set();
@@ -76,7 +82,7 @@ const WordGame = () => {
 
     let uniqueWords = [...new Set(newWordList)];
 
-    while (uniqueWords.length < 20) {
+    while (uniqueWords.length < choicesCount) {
       const randomIndex = Math.floor(Math.random() * wordsList.length);
       if (!uniqueWords.includes(wordsList[randomIndex])) {
         uniqueWords.push(wordsList[randomIndex]);
