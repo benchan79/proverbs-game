@@ -32,12 +32,16 @@ function NumberGame() {
   const [score, setScore] = useState(0);
   const [number, setNumber] = useState("");
   const [wrongProverbs, setWrongProverbs] = useState([]);
+  const [isShuffle, setIsShuffle] = useState(false);
+  const [retry, setRetry] = useState(false);
 
   useEffect(() => {
     const shuffledProverbs = [...Data];
-    shuffleArray(shuffledProverbs);
+    if (isShuffle) {
+      shuffleArray(shuffledProverbs);
+    }
     setProverbsSet(shuffledProverbs);
-  }, []);
+  }, [isShuffle]);
 
   const submitHandler = () => {
     setQuestionCount((prevQuestionCount) => prevQuestionCount + 1);
@@ -80,15 +84,18 @@ function NumberGame() {
     setQuestionCount(1);
     setProverbCount(0);
     setScore(0);
-    shuffleArray(Data);
-    setProverbsSet(Data)
+    const shuffledProverbs = [...Data];
+    if (isShuffle) {
+      shuffleArray(shuffledProverbs);
+    }
+    setProverbsSet(shuffledProverbs);
+    setRetry(false)
   };
 
   const startNewGameWithWrongProverbs = () => {
-    // Shuffle the wrong proverbs
-    shuffleArray(wrongProverbs);
-  
-    // Set the proverbsSet state to the wrong proverbs and reset other game-related states
+    if (isShuffle) {
+      shuffleArray(wrongProverbs);
+    }
     setNumber("");
     setResult("");
     setAttempts([]);
@@ -99,6 +106,7 @@ function NumberGame() {
     setScore(0);
     setProverbsSet(wrongProverbs);
     setWrongProverbs([]);
+    setRetry(true);
   };
   
   const handleButtonClick = (buttonNumber) => {
@@ -116,13 +124,30 @@ function NumberGame() {
   const handleSecretButtonClick = () => {
     setNumber(proverbsSet[questionCount - 1].value);
   };
+
+  const handleShuffleClick = () => {
+    setIsShuffle((previousValue) => {
+      const newValue = previousValue ? false : true;
+      return newValue;
+    });
+  }
   
+  const shuffleLabel = isShuffle ? "Shuffle mode ON" : "Shuffle mode OFF"
+
   return (
     <div style={styles}>
       <h1>Let's Play "What's the Proverb Number?"</h1>
-
+      <p>
+        <button
+          onClick={() => handleShuffleClick()}
+          className="clear-button"
+          disabled={proverbCount !== 0 || retry}
+          style={{ backgroundColor: isShuffle ? "pink" : "rgb(223, 230, 232)" }}
+        >
+          {shuffleLabel}
+        </button>
+      </p>
       {proverbCount + 1}. {proverbsSet[proverbCount].label}
-
       <div className="button-container">
         {[...Array(10)].map((_, index) => (
           <button
@@ -141,45 +166,49 @@ function NumberGame() {
         >
           :
         </button>
-        <button onClick={handleClearButtonClick} className="clear-button" disabled={isOver}>
+        <button
+          onClick={handleClearButtonClick}
+          className="clear-button"
+          disabled={isOver}
+        >
           Clear
         </button>
-        <button onClick={handleSecretButtonClick} className="secret-button" disabled={isOver}>
+        <button
+          onClick={handleSecretButtonClick}
+          className="secret-button"
+          disabled={isOver}
+        >
           Secret
         </button>
       </div>
-
       <div className="input-container">
         <input type="text" value={number} readOnly className="input-field" />
       </div>
-
       <div style={{ display: "flex", gap: 20 }}>
         <Button onClick={submitHandler} label="Submit!" disabled={isOver} />
         <Button onClick={restartHandler} label="New Game" />
-        {isOver && wrongProverbs.length !== 0 && <Button
-          onClick={startNewGameWithWrongProverbs}
-          label="Try again (Wrong Proverbs)"
-          disabled={wrongProverbs.length === 0 || !isOver}
-        />}
+        {isOver && wrongProverbs.length !== 0 && (
+          <Button
+            onClick={startNewGameWithWrongProverbs}
+            label="Try again (Wrong Proverbs)"
+            disabled={wrongProverbs.length === 0 || !isOver}
+          />
+        )}
       </div>
-
       <div style={results}>{result}</div>
-
-      <div>Score: {score} out of {proverbsSet.length}</div>
-
+      <div>
+        Score: {score} out of {proverbsSet.length}
+      </div>
       {questionCount - 1 === proverbsSet.length &&
         score === proverbsSet.length && (
           <div>Congratulations! You won a {prize}!</div>
         )}
-
       {questionCount - 1 === proverbsSet.length &&
         score === proverbsSet.length && <Confetti />}
-
-      {((questionCount - 1) === proverbsSet.length) && 
-        (score !== proverbsSet.length) &&
-        <div>Game Over. Better luck next time.</div>
-      }
-
+      {questionCount - 1 === proverbsSet.length &&
+        score !== proverbsSet.length && (
+          <div>Game Over. Better luck next time.</div>
+        )}
       <hr />
       <div>
         {attempts.map((proverb, index) => (
