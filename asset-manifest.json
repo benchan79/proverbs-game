@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/proverbs-game/static/css/main.9b641007.css",
-    "main.js": "/proverbs-game/static/js/main.7d36e3a3.js",
+    "main.js": "/proverbs-game/static/js/main.d4206a2a.js",
     "index.html": "/proverbs-game/index.html",
     "main.9b641007.css.map": "/proverbs-game/static/css/main.9b641007.css.map",
-    "main.7d36e3a3.js.map": "/proverbs-game/static/js/main.7d36e3a3.js.map"
+    "main.d4206a2a.js.map": "/proverbs-game/static/js/main.d4206a2a.js.map"
   },
   "entrypoints": [
     "static/css/main.9b641007.css",
-    "static/js/main.7d36e3a3.js"
+    "static/js/main.d4206a2a.js"
   ]
 }
